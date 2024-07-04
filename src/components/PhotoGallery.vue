@@ -2,7 +2,6 @@
   <v-app>
     <v-main>
       <v-container fluid>
-       
         <v-row>
           <v-col>
             <v-sheet class="ml-0 mt-n12 py-6 pa-sm-6 pb-md-8 radius-card v-card v-card--flat theme--light white" style="height: 555px; max-width: 1264px;">
@@ -28,6 +27,22 @@
                   </v-img>
                 </v-col>
               </v-row>
+              <v-row>
+              <v-btn class="btn-group px-md-8 mb-2 v-btn v-btn--has-bg theme--light v-size--default primary"
+              style="
+               font-family: Rubik, sans-serif;
+                color: white;
+                margin: 0 8px;
+                border-radius: 20px;
+                background-color: rgb(188, 32, 75);
+                padding: 12px 130px;
+                text-decoration: none;
+                font-size: 16px;
+                cursor: default;"
+              v-if="property">
+                <p class="ma-0 mb-2 pa-0 text-regular-sm primary--text">{{ property.name }}</p>
+              </v-btn>
+            </v-row>
             </v-sheet>
           </v-col>
         </v-row>
@@ -51,7 +66,8 @@ export default {
   data() {
     return {
       photos: [],
-      rooms: []
+      rooms: [],
+      property: null // Adicionando uma nova propriedade para armazenar os detalhes da propriedade
     };
   },
   created() {
@@ -63,7 +79,9 @@ export default {
       const apiUrl = 'https://api.360suites.com.br/room-api/233789';
       try {
         const response = await axios.get(apiUrl);
+        console.log(response.data); // Verificando a estrutura dos dados retornados
         this.photos = response.data.property.propertyImages.slice(0, 3); // Pegando as três primeiras fotos
+        this.property = response.data.property; // Armazenando os detalhes da propriedade
       } catch (error) {
         console.error('Erro ao carregar fotos:', error);
       }
